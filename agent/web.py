@@ -56,6 +56,61 @@ if TYPE_CHECKING:
 
 application = Flask(__name__)
 
+@application.route("/")
+def home():
+    return jsonify({"status": "Press Agent running"})
+
+@application.route("/health")
+def health():
+    return jsonify({"status": "healthy"})
+
+@application.route("/agent/jobs", methods=["GET"])
+@application.route("/agent/jobs/<job_id>", methods=["GET"])
+def agent_jobs_compat(job_id=None):
+    from agent.web import agent_jobs
+    if job_id:
+        # mimic single job fetch
+        jobs = [j for j in to_dict(JobModel.select().where(JobModel.agent_job_id == job_id))]
+        return jsonify({"jobs": jobs})
+    else:
+        return agent_jobs()
+
+@application.route("/agent/files/cleanup", methods=["POST"])
+def agent_files_cleanup():
+    return jsonify({"status": "success", "message": "Not implemented yet"})
+
+@application.route("/agent/jobs/undelivered", methods=["GET"])
+def agent_jobs_undelivered():
+    return jsonify({"jobs": []})
+
+@application.route("/agent/jobs/cleanup_unused_files", methods=["POST"])
+def agent_cleanup_unused_files():
+    # Stub response
+    return jsonify({"status": "success", "message": "Cleanup unused files not implemented yet"})
+
+# --- Workers ---
+@application.route("/agent/workers", methods=["GET"])
+def agent_workers():
+    return jsonify({"workers": []})
+
+@application.route("/agent/workers/<worker_id>", methods=["GET"])
+def agent_worker_detail(worker_id):
+    return jsonify({"worker": {}})
+
+# --- Servers ---
+@application.route("/agent/servers", methods=["GET"])
+def agent_servers():
+    return jsonify({"servers": []})
+
+@application.route("/agent/servers/<server_name>", methods=["GET"])
+def agent_server_detail(server_name):
+    return jsonify({"server": {}})
+
+# --- Fallback route for undefined endpoints (optional) ---
+@application.errorhandler(404)
+def page_not_found(e):
+    return jsonify({"error": "Endpoint not found"}), 404
+
 
 def validate_bench(fn):
     @wraps(fn)
