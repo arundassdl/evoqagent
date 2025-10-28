@@ -1,0 +1,12 @@
+
+{
+  "name": "agent.evoq.app",
+  "redis_port": 6379,
+  "benches_directory": "/home/frappe/benches",
+  "nginx_directory": "/etc/nginx/conf.d",
+  "logs_directory": "/home/frappe/agent/logs",
+  "max_workers": 2,
+  "press_no_auth": true,
+  "agent_username": "none",
+  "agent_password": "none"
+}
