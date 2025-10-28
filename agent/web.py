@@ -71,7 +71,7 @@ def agent_jobs_compat(job_id=None):
     if job_id:
         # mimic single job fetch
         jobs = [j for j in to_dict(JobModel.select().where(JobModel.agent_job_id == job_id))]
-        return jsonify({"jobs": jobs})
+        return jsonify(jobs)
     else:
         return agent_jobs()
 
