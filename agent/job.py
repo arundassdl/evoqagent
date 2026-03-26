@@ -28,6 +28,19 @@ if TYPE_CHECKING:
     from agent.base import Base
 
 
+from agent.nextjs_jobs import (
+    ProvisionNextjsSiteJob,
+    TeardownNextjsSiteJob,
+    RedeployNextjsSiteJob,
+)
+
+JOB_CLASSES = {
+    **JOB_CLASSES,
+    "Provision Next.js Site": ProvisionNextjsSiteJob,
+    "Teardown Next.js Site":  TeardownNextjsSiteJob,
+    "Redeploy Next.js Site":  RedeployNextjsSiteJob,
+}
+
 if os.environ.get("SENTRY_DSN"):
     try:
         import sentry_sdk
