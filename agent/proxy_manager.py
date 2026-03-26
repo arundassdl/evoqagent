@@ -23,8 +23,14 @@ def run_proxy_playbook(
     proxy_hosts: list,
     press_callback_url: str,
     press_callback_token: str,
+    deployment_mode: str = "Full Stack",
+    backend_url: str = "",
 ) -> subprocess.CompletedProcess:
-    """Render inventory + vars and run proxy_nextjs.yml."""
+    """
+    Render inventory + vars and run proxy_nextjs.yml.
+    Passes deployment_mode and backend_url so the Jinja2 template can
+    conditionally render the Frappe backend proxy blocks for Frontend Only.
+    """
     return _run(
         playbook="proxy_nextjs.yml",
         inventory_content=_render_inventory(proxy_hosts),
@@ -35,6 +41,8 @@ def run_proxy_playbook(
             "app_server_private_ip": app_server_private_ip,
             "press_callback_url":    press_callback_url,
             "press_callback_token":  press_callback_token,
+            "deployment_mode":       deployment_mode,
+            "backend_url":           backend_url,
         },
     )
 
@@ -73,7 +81,7 @@ def rollback_proxy_playbook(
     )
 
 
-# ── Private ──────────────────────────────────────────────────────────
+# ── Private ───────────────────────────────────────────────────────────
 
 def _run(playbook: str, inventory_content: str, extra_vars: dict) -> subprocess.CompletedProcess:
     with tempfile.TemporaryDirectory(prefix="nfp_ansible_") as tmpdir:

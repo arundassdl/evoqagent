@@ -153,6 +153,8 @@ class ProvisionNextjsSiteJob:
             proxy_hosts           = proxy_hosts,
             press_callback_url    = p.get("press_callback_url", ""),
             press_callback_token  = p.get("press_callback_token", ""),
+            deployment_mode       = p.get("deployment_mode", "Full Stack"),
+            backend_url           = p.get("backend_url", ""),
         )
 
 
@@ -279,4 +281,6 @@ class RedeployNextjsSiteJob:
             proxy_hosts           = proxy_hosts,
             press_callback_url    = p.get("press_callback_url", ""),
             press_callback_token  = p.get("press_callback_token", ""),
+            deployment_mode       = p.get("deployment_mode", "Full Stack"),
+            backend_url           = p.get("backend_url", ""),
         )
